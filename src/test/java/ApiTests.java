@@ -1,29 +1,25 @@
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static java.util.OptionalInt.empty;
-import static javax.management.Query.not;
 import static org.hamcrest.Matchers.*;
 
-public class apiTests {
+public class ApiTests {
 
     @BeforeAll
-    public static void beforeAllTests(){
+    public static void preconditionsForAllTests() {
         RestAssured.baseURI = "https://reqres.in";
         RestAssured.basePath = "/api";
     }
 
     //Проверка удаления пользователя
     @Test
-    void deleteUserTest(){
+    void deleteUserTest() {
         when()
                 .delete("/users/2")
-
                 .then()
                 .statusCode(204)
                 .body(isEmptyString());
