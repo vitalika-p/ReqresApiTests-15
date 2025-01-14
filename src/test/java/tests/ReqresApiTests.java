@@ -4,37 +4,24 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import models.*;
 import org.junit.jupiter.api.*;
-import specs.CreateUserSpec;
-import specs.LoginSpec;
-import specs.UpdateUserSpec;
-import specs.UserByIdSpec;
+import specs.*;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static specs.DeleteUserSpec.deleteRequestSpec;
-import static specs.DeleteUserSpec.deleteResponseSpec;
 
-
-public class ReqresApiTests {
-
-    @BeforeAll
-    public static void preconditionsForAllTests() {
-        RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
-    }
+public class ReqresApiTests extends TestBase{
 
     @DisplayName("Проверка удаления пользователя")
     @Tag("API")
     @Test
     void deleteUserTest() {
         step("Make request and assert", () ->
-                given(deleteRequestSpec)
+                given(DeleteUserSpec.deleteRequestSpec)
                         .when()
                         .delete()
                         .then()
-                        .spec(deleteResponseSpec)
+                        .spec(DeleteUserSpec.deleteResponseSpec)
         );
     }
 
@@ -50,12 +37,12 @@ public class ReqresApiTests {
         });
 
         CreateUserModel responseData = step("Отправить запрос на создание пользователя", () ->
-                given(CreateUserSpec.createUserRequestSpec)
+                given(UserSpec.UserRequestSpec)
                         .body(requestData)
                         .when()
                         .post("/users")
                         .then()
-                        .spec(CreateUserSpec.createUserResponseSpec)
+                        .spec(UserSpec.createUserResponseSpec)
                         .extract().as(CreateUserModel.class)
         );
 
@@ -70,11 +57,11 @@ public class ReqresApiTests {
     @Test
     void getUserByIdTest() {
         UserResponseModel responseData = step("Отправить запрос на получение пользователя по ID", () ->
-                given(UserByIdSpec.requestSpec)
+                given(UserSpec.UserRequestSpec)
                         .when()
                         .get("/users/2")
                         .then()
-                        .spec(UserByIdSpec.getUserResponseSpec)
+                        .spec(UserSpec.getUserResponseSpec)
                         .extract()
                         .as(UserResponseModel.class)
         );
@@ -102,12 +89,12 @@ public class ReqresApiTests {
         });
 
         LoginModel errorResponse = step("Отправить запрос с некорректными данными", () ->
-                given(LoginSpec.requestSpec)
+                given(UserSpec.UserRequestSpec)
                         .body(loginRequest)
                         .when()
                         .post("/login")
                         .then()
-                        .spec(LoginSpec.unsuccessfulLoginResponseSpec)
+                        .spec(UserSpec.unsuccessfulLoginResponseSpec)
                         .extract().as(LoginModel.class)
         );
 
@@ -128,12 +115,12 @@ public class ReqresApiTests {
         });
 
         UpdateUserModel updatedUser = step("Отправить запрос на обновление пользователя", () ->
-                given(UpdateUserSpec.requestSpec)
+                given(UserSpec.UserRequestSpec)
                         .body(updateUserRequest)
                         .when()
                         .put("/users/2")
                         .then()
-                        .spec(UpdateUserSpec.updateUserResponseSpec)
+                        .spec(UserSpec.updateUserResponseSpec)
                         .extract().as(UpdateUserModel.class)
         );
 
