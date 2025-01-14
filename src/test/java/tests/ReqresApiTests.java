@@ -17,13 +17,7 @@ import static specs.DeleteUserSpec.deleteRequestSpec;
 import static specs.DeleteUserSpec.deleteResponseSpec;
 
 
-public class ReqresApiTests {
-
-    @BeforeAll
-    public static void preconditionsForAllTests() {
-        RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
-    }
+public class ReqresApiTests extends TestBase{
 
     @DisplayName("Проверка удаления пользователя")
     @Tag("API")
