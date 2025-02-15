@@ -8,7 +8,6 @@ import io.restassured.specification.ResponseSpecification;
 import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
-import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.StringContains.containsString;

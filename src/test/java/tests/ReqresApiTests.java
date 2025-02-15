@@ -1,7 +1,5 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import models.*;
 import org.junit.jupiter.api.*;
 import specs.*;
