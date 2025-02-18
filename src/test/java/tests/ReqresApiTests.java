@@ -8,20 +8,21 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReqresApiTests extends TestBase{
+public class ReqresApiTests extends TestBase {
 
     @DisplayName("Проверка удаления пользователя")
     @Tag("API")
     @Test
     void deleteUserTest() {
-        step("Make request and assert", () ->
-                given(DeleteUserSpec.deleteRequestSpec)
+        step("Отправить запрос на удаление пользователя и проверить ответ", () ->
+                given(UserSpec.UserRequestSpec)
                         .when()
-                        .delete()
+                        .delete("/users/2")
                         .then()
-                        .spec(DeleteUserSpec.deleteResponseSpec)
+                        .spec(UserSpec.responseSpec204NoContent)
         );
     }
+
 
     @DisplayName("Создание нового пользователя")
     @Tag("API")
@@ -40,7 +41,7 @@ public class ReqresApiTests extends TestBase{
                         .when()
                         .post("/users")
                         .then()
-                        .spec(UserSpec.createUserResponseSpec)
+                        .spec(UserSpec.responseSpec201Created)
                         .extract().as(CreateUserModel.class)
         );
 
@@ -59,7 +60,7 @@ public class ReqresApiTests extends TestBase{
                         .when()
                         .get("/users/2")
                         .then()
-                        .spec(UserSpec.getUserResponseSpec)
+                        .spec(UserSpec.responseSpec200Ok)
                         .extract()
                         .as(UserResponseModel.class)
         );
@@ -74,7 +75,6 @@ public class ReqresApiTests extends TestBase{
             assertThat(userData.getAvatar()).isNotEmpty();
         });
     }
-
 
     @DisplayName("Некорректный логин без пароля")
     @Tag("API")
@@ -92,7 +92,7 @@ public class ReqresApiTests extends TestBase{
                         .when()
                         .post("/login")
                         .then()
-                        .spec(UserSpec.unsuccessfulLoginResponseSpec)
+                        .spec(UserSpec.responseSpec400BadRequest)
                         .extract().as(LoginModel.class)
         );
 
@@ -118,7 +118,7 @@ public class ReqresApiTests extends TestBase{
                         .when()
                         .put("/users/2")
                         .then()
-                        .spec(UserSpec.updateUserResponseSpec)
+                        .spec(UserSpec.responseSpec200Ok)
                         .extract().as(UpdateUserModel.class)
         );
 
